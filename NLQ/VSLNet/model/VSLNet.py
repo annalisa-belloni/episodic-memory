@@ -72,7 +72,7 @@ class VSLNet(nn.Module):
         self.cq_concat = CQConcatenate(dim=configs.dim)
         # query-guided highlighting
         self.highlight_layer = (
-            HighLightLayer(dim=configs.dim) if self.configs.base_version else None
+            None if self.configs.base_version else HighLightLayer(dim=configs.dim)
         )
         # conditioned predictor
         self.predictor = ConditionedPredictor(
