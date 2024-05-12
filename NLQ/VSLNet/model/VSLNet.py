@@ -130,13 +130,13 @@ class VSLNet(nn.Module):
         video_features = self.feature_encoder(video_features, mask=v_mask)
         features = self.cq_attention(video_features, query_features, v_mask, q_mask)
 
-        # self.highlight_layer is always not None when self.configs.base_version is True, but this double check is done for linting purposes
-        if self.configs.base_version is not False and self.highlight_layer is not None:
+        # self.highlight_layer is always not None when self.configs.base_version is False, but this double check is done for linting purposes
+        if self.configs.base_version or self.highlight_layer is None:
+            h_score = None
+        else:
             features = self.cq_concat(features, query_features, q_mask)
             h_score = self.highlight_layer(features, v_mask)
             features = features * h_score.unsqueeze(2)
-        else:
-            h_score = None
 
         start_logits, end_logits = self.predictor(features, mask=v_mask)
         return h_score, start_logits, end_logits
