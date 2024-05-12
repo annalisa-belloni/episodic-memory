@@ -1,5 +1,6 @@
 """Main script to train/test models for Ego4D NLQ dataset.
 """
+
 import argparse
 import os
 
@@ -158,9 +159,13 @@ def main(configs, parser):
                     word_ids, char_ids, vfeats, video_mask, query_mask
                 )
                 # compute loss
-                highlight_loss = model.compute_highlight_loss(
-                    h_score, h_labels, video_mask
-                )
+                if configs.base_version is False and h_score is not None:
+                    highlight_loss = model.compute_highlight_loss(
+                        h_score, h_labels, video_mask
+                    )
+                else:
+                    # Constructs a tensor with no autograd history
+                    highlight_loss = torch.tensor(0).float()
                 loc_loss = model.compute_loss(
                     start_logits, end_logits, s_labels, e_labels
                 )
@@ -174,11 +179,21 @@ def main(configs, parser):
                 optimizer.step()
                 scheduler.step()
                 if writer is not None and global_step % configs.tb_log_freq == 0:
-                    writer.add_scalar("Loss/Total", total_loss.detach().cpu(), global_step)
+                    writer.add_scalar(
+                        "Loss/Total", total_loss.detach().cpu(), global_step
+                    )
                     writer.add_scalar("Loss/Loc", loc_loss.detach().cpu(), global_step)
-                    writer.add_scalar("Loss/Highlight", highlight_loss.detach().cpu(), global_step)
-                    writer.add_scalar("Loss/Highlight (*lambda)", (configs.highlight_lambda * highlight_loss.detach().cpu()), global_step)
-                    writer.add_scalar("LR", optimizer.param_groups[0]["lr"], global_step)
+                    writer.add_scalar(
+                        "Loss/Highlight", highlight_loss.detach().cpu(), global_step
+                    )
+                    writer.add_scalar(
+                        "Loss/Highlight (*lambda)",
+                        (configs.highlight_lambda * highlight_loss.detach().cpu()),
+                        global_step,
+                    )
+                    writer.add_scalar(
+                        "LR", optimizer.param_groups[0]["lr"], global_step
+                    )
 
                 # evaluate
                 if (
@@ -225,7 +240,7 @@ def main(configs, parser):
                         # only keep the top-3 model checkpoints
                         filter_checkpoints(model_dir, suffix="t7", max_to_keep=3)
                     model.train()
-            
+
         score_writer.close()
 
     elif configs.mode.lower() == "test":

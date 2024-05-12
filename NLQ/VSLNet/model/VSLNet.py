@@ -135,6 +135,8 @@ class VSLNet(nn.Module):
             features = self.cq_concat(features, query_features, q_mask)
             h_score = self.highlight_layer(features, v_mask)
             features = features * h_score.unsqueeze(2)
+        else:
+            h_score = None
 
         start_logits, end_logits = self.predictor(features, mask=v_mask)
         return h_score, start_logits, end_logits
