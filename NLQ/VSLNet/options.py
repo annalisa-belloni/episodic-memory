@@ -22,7 +22,7 @@ def read_command_line():
         "--eval_gt_json",
         type=str,
         default=None,
-        help="Provide GT JSON to evaluate while training"
+        help="Provide GT JSON to evaluate while training",
     )
     parser.add_argument(
         "--fv", type=str, default="new", help="[new | org] for visual features"
@@ -121,7 +121,9 @@ def read_command_line():
         default="checkpoints",
         help="path to save trained model weights",
     )
-    parser.add_argument("--model_name", type=str, default="vslnet", help="model name")  # noqa
+    parser.add_argument(
+        "--model_name", type=str, default="vslnet", help="model name"
+    )  # noqa
     parser.add_argument(
         "--suffix",
         type=str,
@@ -203,5 +205,13 @@ def read_command_line():
         default=None,
         help="A list of splits to remove empty queries from. Valid values for the list are: ['train', 'val']",  # noqa
     )
+
+    # with store_true the default is False
+    parser.add_argument(
+        "--base_version",
+        action="store_true",
+        help="Implement VSLBase instead of VSLNet",
+    )
+
     configs = parser.parse_args()
     return configs, parser
