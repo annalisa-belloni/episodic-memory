@@ -112,11 +112,6 @@ class VSLNet(nn.Module):
             self.cq_attention,
         ]
 
-        # TODO: for testing add everything and see if something changes. Then I should remove this
-        layers_to_freeze.append(self.cq_concat)
-        layers_to_freeze.append(self.highlight_layer)
-        layers_to_freeze.append(self.predictor)
-
         if hasattr(self, "query_affine"):
             layers_to_freeze.append(self.query_affine)
         for layer in layers_to_freeze:
