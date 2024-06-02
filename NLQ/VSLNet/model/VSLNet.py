@@ -113,7 +113,7 @@ class VSLNet(nn.Module):
         ]
 
         # TODO: for testing add everything and see if something changes. Then I should remove this
-        layers_to_freeze.append(self.concat)
+        layers_to_freeze.append(self.cq_concat)
         layers_to_freeze.append(self.highlight_layer)
         layers_to_freeze.append(self.predictor)
 
