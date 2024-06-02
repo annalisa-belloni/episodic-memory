@@ -103,6 +103,26 @@ class VSLNet(nn.Module):
             # init parameters
             self.init_parameters()
 
+    def freeze_layers(self):
+        # freeze all the weights except the last two layers
+        layers_to_freeze = [
+            self.video_affine,
+            self.feature_encoder,
+            self.embedding_net,
+            self.cq_attention,
+        ]
+
+        # TODO: for testing add everything and see if something changes. Then I should remove this
+        layers_to_freeze.append(self.concat)
+        layers_to_freeze.append(self.highlight_layer)
+        layers_to_freeze.append(self.predictor)
+
+        if hasattr(self, "query_affine"):
+            layers_to_freeze.append(self.query_affine)
+        for layer in layers_to_freeze:
+            for param in layer.parameters():
+                param.requires_grad = False
+
     def init_parameters(self):
         def init_weights(m):
             if (

@@ -214,6 +214,12 @@ def read_command_line():
     )
 
     parser.add_argument(
+        "--freeze_layers",
+        action="store_true",
+        help="Update the weights of only the last two layers",
+    )
+
+    parser.add_argument(
         "--pretrained_weights_dir",
         type=str,
         default=None,

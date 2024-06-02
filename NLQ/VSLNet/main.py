@@ -103,6 +103,9 @@ def main(configs, parser):
             configs=configs, word_vectors=dataset.get("word_vector", None)
         ).to(device)
 
+        if configs.freeze_layers:
+            model.freeze_layers()
+
         if configs.pretrained_weights_dir is not None:
             # create pretrained weights path
             weights_dir = configs.pretrained_weights_dir
