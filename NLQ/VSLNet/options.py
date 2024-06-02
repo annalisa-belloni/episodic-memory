@@ -213,5 +213,12 @@ def read_command_line():
         help="Implement VSLBase instead of VSLNet",
     )
 
+    parser.add_argument(
+        "--pretrained_weights_dir",
+        type=str,
+        default=None,
+        help="path of the pretrained model weights",
+    )
+
     configs = parser.parse_args()
     return configs, parser

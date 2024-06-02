@@ -102,6 +102,15 @@ def main(configs, parser):
         model = VSLNet(
             configs=configs, word_vectors=dataset.get("word_vector", None)
         ).to(device)
+
+        if configs.pretrained_weights_dir is not None:
+            # create pretrained weights path
+            weights_dir = configs.pretrained_weights_dir
+
+            # get last checkpoint file
+            filename = get_last_checkpoint(weights_dir, suffix="t7")
+            model.load_state_dict(torch.load(filename))
+
         optimizer, scheduler = build_optimizer_and_scheduler(model, configs=configs)
         # start training
         best_metric = -1.0
