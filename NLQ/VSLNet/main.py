@@ -110,6 +110,7 @@ def main(configs, parser):
             # get last checkpoint file
             filename = get_last_checkpoint(weights_dir, suffix="t7")
             model.load_state_dict(torch.load(filename, map_location=device))
+            print("Loaded pretrained weights")
 
         if configs.freeze_layers:
             model.freeze_layers()
