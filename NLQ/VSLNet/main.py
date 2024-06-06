@@ -113,6 +113,7 @@ def main(configs, parser):
 
         if configs.freeze_layers:
             model.freeze_layers()
+            print("Some layers freezed")
 
         optimizer, scheduler = build_optimizer_and_scheduler(model, configs=configs)
         # start training
