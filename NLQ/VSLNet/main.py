@@ -3,6 +3,7 @@
 
 import argparse
 import os
+from datetime import datetime
 
 import numpy as np
 import options
@@ -123,6 +124,8 @@ def main(configs, parser):
             os.path.join(model_dir, "eval_results.txt"), mode="w", encoding="utf-8"
         )
         print("start training...", flush=True)
+        start_time = datetime.now()
+
         global_step = 0
         for epoch in range(configs.epochs):
             model.train()
@@ -255,6 +258,8 @@ def main(configs, parser):
                         filter_checkpoints(model_dir, suffix="t7", max_to_keep=3)
                     model.train()
 
+        elapsed_time = datetime.now() - start_time
+        print("Elapsed time for training: ", elapsed_time)
         score_writer.close()
 
     elif configs.mode.lower() == "test":
@@ -274,6 +279,8 @@ def main(configs, parser):
         model.load_state_dict(torch.load(filename))
         model.eval()
         result_save_path = filename.replace(".t7", "_test_result.json")
+
+        start_time = datetime.now()
         results, mIoU, score_str = eval_test(
             model=model,
             data_loader=test_loader,
@@ -281,6 +288,8 @@ def main(configs, parser):
             mode="test",
             result_save_path=result_save_path,
         )
+        elapsed_time = datetime.now() - start_time
+        print("Elapsed time for testing: ", elapsed_time)
         print(score_str, flush=True)
 
 
