@@ -1,7 +1,7 @@
 # Natural Language Queries in Egocentric Videos
 This repository contains the code used for the Egocentric Vision project in the scope of the course "Machine learning and Deep learning" at the Polytechnic University of Turin.
 
-The code for the implementation and the usage of VSLNet and VSLBase is present in the directory `./NLQ/VSLNet/`, the execution results are in `./NLQ/VSLNet/runs/` and the developed Jupyter Notebooks are in `./notebooks/`.  
+The code for the implementation and the usage of VSLNet and VSLBase is present in the directory `./NLQ/VSLNet/`, the execution results are in `./NLQ/VSLNet/runs/`, the report in `./report/`, and the developed Jupyter Notebooks are in `./notebooks/`.  
 Among the results, there are also the files containing the training losses visualizable with TensorBoard.
 In `./notebooks/`, there are:
 - [analysis_annotations.ipynb](./notebooks/analysis_annotations.ipynb): notebook run in Google Colab for the analysis of the annotations
